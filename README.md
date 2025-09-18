@@ -56,6 +56,7 @@ void loop() {
   matrix.updateDisplay();
   delay(1000);
 }
+```
 
 # Contributing
 ---
