@@ -27,13 +27,13 @@ An Arduino library for controlling 8x16 LED matrices driven by the AIP1640 chip.
 Here's a simple example to get you started:
 
 ```cpp
-#include <AIP1640.h>
+#include <AIP1640_LED_Matrix.h>
 
 // Define the pins connected to your matrix (CLK, DIO)
 const int CLK_PIN = 2;
 const int DIO_PIN = 3;
 
-AIP1640 matrix(CLK_PIN, DIO_PIN);
+AIP1640_LED_Matrix matrix(CLK_PIN, DIO_PIN);
 
 void setup() {
   // Initialize the matrix
