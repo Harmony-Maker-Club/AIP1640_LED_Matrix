@@ -1,59 +1,63 @@
-# AIP1640 LED Matrix Library
+# AIP1640_LED_Matrix
 
-An Arduino library for controlling 8x16 LED matrices driven by the AIP1640 chip. This library simplifies displaying text, patterns, and pixels on the matrix display. It uses a simple bit-banging protocol, which means it doesn't require any special hardware other than the LED matrix itself and your Arduino board.
+A simple and flexible Arduino library for controlling a 16x8 LED matrix display based on the AIP1640 chip.
 
-## Features
+---
 
--   **Simple API**: Easily draw pixels, lines, rectangles, and text.
--   **Text Display**: Built-in functionality for scrolling text on the matrix.
--   **Low Overhead**: The library is lightweight and designed to be efficient for use on microcontrollers.
--   **Bit-Banging Protocol**: No dedicated I2C or SPI hardware is required, freeing up those pins for other uses.
+### Key Features
+* **Flexible Pin Connection:** Use any two available digital pins on your Arduino board for communication.
+* **Repurposes the AiP1640's non-conforming I2C connections:** This library uses a custom "bit-banging" communication protocol to interface with the AIP1640, as the chip does not conform to the standard I2C protocol. This enables the board to be connected to any two Arduino pins.
+* **Pixel-Level Control:** Easily turn individual pixels on or off with `setPixel()`.
+* **Pattern Drawing:** A convenient `drawPattern()` function for displaying custom shapes and characters.
+* **Display Buffer:** The library uses a display buffer, allowing you to build complex patterns in memory before writing them to the physical display using `update()`.
 
-## Getting Started
-
-### Prerequisites
-
-* An Arduino board (e.g., Uno, Nano, or ESP32)
-* An 8x16 LED Matrix with an AIP1640 driver chip
-* Jumper wires to connect the matrix to your Arduino
+---
 
 ### Installation
+You can install this library through the **Arduino Library Manager** in the IDE, or by manually downloading the `.zip` file from the [releases page](https://github.com/Harmony-Maker-Club/AIP1640_LED_Matrix/releases).
 
-1.  **Download the library**: Click the "Code" button on the GitHub repository page, and select "Download ZIP".
-2.  **Add to Arduino IDE**: Open your Arduino IDE, go to `Sketch` -> `Include Library` -> `Add .ZIP Library`, and select the downloaded file.
+---
 
-### Basic Usage
+### Getting Started
+Connect your AIP1640 LED matrix to your Arduino board. While the display labels its pins as SCL and SDA, you can connect them to any two digital pins on your board.
 
-Here's a simple example to get you started:
+- **Display's SCL pin** → **Arduino digital pin** (e.g., pin 2)
+- **Display's SDA pin** → **Arduino digital pin** (e.g., pin 3)
+
+### Basic Usage Example
+
+This example demonstrates how to set up the matrix, turn on a single pixel, and update the display.
 
 ```cpp
 #include <AIP1640_LED_Matrix.h>
 
-// Define the pins connected to your matrix (CLK, DIO)
-const int CLK_PIN = 2;
-const int DIO_PIN = 3;
+// Note: While the display hardware labels these pins as SCL and SDA,
+// the AIP1640 chip does not conform to the I2C protocol. This library
+// uses a custom "bit-banging" algorithm, allowing it to interface with the
+// display on any available digital pins, thereby freeing up the dedicated
+// hardware I2C lines for other devices that require them.
+const int CLK_PIN = 2; // Connect to the SCL pin on the display
+const int DIO_PIN = 3; // Connect to the SDA pin on the display
 
 AIP1640_LED_Matrix matrix(CLK_PIN, DIO_PIN);
 
 void setup() {
-  // Initialize the matrix
   matrix.begin();
-  // Clear the display
-  matrix.clearDisplay();
-  // Set the brightness (0-7)
-  matrix.setBrightness(4);
+  matrix.clear();
 }
 
 void loop() {
-  // Draw a single pixel at (x=0, y=0)
-  matrix.setPixel(0, 0, true);
-  // Update the display to show the pixel
-  matrix.updateDisplay();
+  // Turn on a pixel at (8, 4)
+  matrix.setPixel(8, 4, true);
+
+  // Update the display to show the changes
+  matrix.update();
+
   delay(1000);
   
-  // Clear the pixel
-  matrix.setPixel(0, 0, false);
-  matrix.updateDisplay();
+  matrix.clear();
+  matrix.update();
+  
   delay(1000);
 }
 ```
