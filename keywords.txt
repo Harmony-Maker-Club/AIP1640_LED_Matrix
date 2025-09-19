@@ -3,9 +3,9 @@ AIP1640 LED Matrix
 
 #######################################
 
-AIP1640_LED_Matrix	KEYWORD1
-begin	KEYWORD2
-clear	KEYWORD2
-update	KEYWORD2
-setPixel	KEYWORD2
+AIP1640	KEYWORD1
+LEDMatrix	KEYWORD1
+MatrixDisplay	KEYWORD2
+setPixel	KEYWORD1
 drawPattern	KEYWORD2
+update	KEYWORD1
